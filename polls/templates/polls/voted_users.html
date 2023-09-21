@@ -1,0 +1,17 @@
+
+{% block content %}
+  <h1>Votos para la pregunta: {{ question.question_text }}</h1>
+  <ul>
+    {% for question_user in question_users %}
+      <li>
+        Usuario: {{ question_user.user.username }}<br>
+        Opción elegida: {{ question_user.choice.choice_text }}<br>
+        Fecha del voto: {{ question_user.fecha }}
+      </li>
+    {% empty %}
+      <li>No se han registrado votos para esta pregunta.</li>
+    {% endfor %}
+  </ul>
+  <a href="http://127.0.0.1:8000/">Inicio</a>
+  <a href="{% url 'polls:detail' question.id %}">Volver a la pregunta</a>
+{% endblock %}

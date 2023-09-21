@@ -1,0 +1,9 @@
+<h1>Ya realizaste esta encuesta</h1>
+
+
+{% if question %}
+<p>¿Quieres votar nuevamente?</p>
+<a href="{% url 'polls:unvote_and_revote' question.id %}">Cambiar voto</a>
+{% endif %}
+
+  <a href="http://127.0.0.1:8000/">Inicio</a>

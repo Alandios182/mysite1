@@ -1,0 +1,45 @@
+{% if latest_question_list %}
+<table>
+    <thead>
+        <tr>
+            <th>Pregunta</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for question in latest_question_list %}
+            <tr>
+                <td>
+                  <h1> <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></h1> 
+                </td>
+                <td>
+                    {% if user.is_superuser %}
+                        &nbsp;&nbsp;&nbsp; <!-- Agrega espacios como separador -->
+                        {% if question.enabled %}
+                         <h3> <a href="{% url 'polls:disable_question' question.id %}">Deshabilitar</a></h3>  
+                        {% else %}
+                          <h3>  <a href="{% url 'polls:enable_question' question.id %}">Habilitar</a></h3> 
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+{% if disabled_message %}
+    <p>{{ disabled_message }}</p>
+{% endif %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'polls/style.css' %}">
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<strong> <h2>Última pregunta contestada:</h2>
+  <p>Pregunta: {{ latest_question_user.question.question_text|default:"-" }}</p>
+  <p>Usuario: {{ latest_question_user.user.username|default:"-" }}</p>
+  <p>Fecha del voto: {{ latest_question_user.fecha|default:"-" }}</p></strong>
+
+
+  

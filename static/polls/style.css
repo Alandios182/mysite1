@@ -1,0 +1,25 @@
+li a {
+    color: black;
+ 
+    
+}
+
+h2{
+    color: black;
+ 
+    
+}
+
+p{
+    color: black;
+ 
+    
+}
+.bottom-text {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background-color: #f0f0f0;
+    padding: 10px 0;
+}

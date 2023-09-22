@@ -3,22 +3,22 @@
     <thead>
         <tr>
             <th>Pregunta</th>
-            <th>Acción</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         {% for question in latest_question_list %}
             <tr>
                 <td>
-                  <h1> <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></h1> 
+                   <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
                 </td>
                 <td>
                     {% if user.is_superuser %}
                         &nbsp;&nbsp;&nbsp; <!-- Agrega espacios como separador -->
                         {% if question.enabled %}
-                         <h3> <a href="{% url 'polls:disable_question' question.id %}">Deshabilitar</a></h3>  
+                          <a href="{% url 'polls:disable_question' question.id %}">Deshabilitar</a>
                         {% else %}
-                          <h3>  <a href="{% url 'polls:enable_question' question.id %}">Habilitar</a></h3> 
+                           <a href="{% url 'polls:enable_question' question.id %}">Habilitar</a>
                         {% endif %}
                     {% endif %}
                 </td>

@@ -15,7 +15,5 @@ urlpatterns = [
     path('<int:question_id>/', views.detail, name='detail'),
     path('<int:question_id>/disable/', views.disable_question, name='disable_question'),
     path('<int:question_id>/enable/', views.enable_question, name='enable_question'),
-
-
-    
+    path("register/", views.register_request, name="register")    
     ]

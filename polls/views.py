@@ -27,6 +27,10 @@ from django.contrib.auth.decorators import user_passes_test
 from django.urls import reverse
 from .models import Question
 from django.shortcuts import render, get_object_or_404, redirect
+from .forms import NewUserForm
+from django.contrib.auth import login
+from django.contrib import messages
+
 def is_superuser(user):
     return user.is_superuser
 
@@ -174,3 +178,17 @@ def enable_question(request, question_id):
         question.save()
 
     return redirect('http://127.0.0.1:8000/')
+
+
+
+def register_request(request):
+	if request.method == "POST":
+		form = NewUserForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			login(request, user)
+			messages.success(request, "Registration successful." )
+			return redirect("http://127.0.0.1:8000/")
+		messages.error(request, "Unsuccessful registration. Invalid information.")
+	form = NewUserForm()
+	return render (request=request, template_name="polls/register.html", context={"form":form})

@@ -15,5 +15,8 @@ urlpatterns = [
     path('<int:question_id>/', views.detail, name='detail'),
     path('<int:question_id>/disable/', views.disable_question, name='disable_question'),
     path('<int:question_id>/enable/', views.enable_question, name='enable_question'),
-    path("register/", views.register_request, name="register")    
+    path("register/", views.register_request, name="register"),
+    path("login/", views.login_request, name="login"),
+    path("logout/", views.logout_request, name= "logout"),
+
     ]

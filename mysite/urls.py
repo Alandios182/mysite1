@@ -26,6 +26,10 @@ urlpatterns = [
     path('polls/', include('polls.urls')),
     path('admin/', admin.site.urls),
     path('', polls_views.index, name='index'),
+    path("register/", polls_views.register_request, name="register"),    
+    path("login/", polls_views.login_request, name="login"),
+    path("logout/", polls_views.logout_request, name= "logout"),
+
 
     
 

@@ -48,3 +48,12 @@ class QuestionUser(models.Model):
         return f'{self.user.username} votó en {self.question.question_text}'
 
 
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    street = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    postal_code = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"{self.user.username}'s Address"

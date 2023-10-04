@@ -18,5 +18,5 @@ urlpatterns = [
     path("register/", views.register_request, name="register"),
     path("login/", views.login_request, name="login"),
     path("logout/", views.logout_request, name= "logout"),
-
+    path('edit_question_and_choices/<int:question_id>/', views.edit_question_and_choices, name='edit_question_and_choices'),
     ]

@@ -27,7 +27,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.urls import reverse
 from .models import Question
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import NewUserForm
+from .forms import NewUserForm,QuestionForm,ChoiceFormSet
 from django.contrib.auth import login
 from django.contrib import messages
 from .forms import NewUserForm
@@ -37,6 +37,7 @@ from django.contrib.auth.forms import AuthenticationForm #add this
 from django.contrib.auth import login, authenticate, logout #add this
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import user_passes_test
 def is_superuser(user):
     return user.is_superuser
 
@@ -128,6 +129,13 @@ def vote(request, question_id):
         return render(request, 'polls/detail.html', {
             'question': question,
             'error_message': "No seleccionaste una opción válida.",
+        })
+
+    # Verificar si la choice seleccionada está suspendida
+    if selected_choice.suspended:
+        return render(request, 'polls/detail.html', {
+            'question': question,
+            'error_message': "No puedes votar en una opción suspendida.",
         })
     else:
         # Registra el voto en la tabla QuestionUser
@@ -223,3 +231,22 @@ def logout_request(request):
 	messages.info(request, "You have successfully logged out.") 
 	return redirect("polls:login")
 
+@login_required
+def edit_question_and_choices(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+
+    if request.method == 'POST':
+        question_form = QuestionForm(request.POST, instance=question)
+        choice_formset = ChoiceFormSet(request.POST, instance=question)
+        if question_form.is_valid() and choice_formset.is_valid():
+            question_form.save()  # Guarda primero la pregunta
+            choice_formset.save()  # Luego guarda los choices
+            return redirect('polls:detail', question_id=question.id)
+    else:
+        question_form = QuestionForm(instance=question)
+        choice_formset = ChoiceFormSet(instance=question)
+
+    return render(request, 'polls/edit_question_and_choices.html', {
+        'question_form': question_form,
+        'choice_formset': choice_formset,
+    })

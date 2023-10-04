@@ -29,8 +29,6 @@ urlpatterns = [
     path("register/", polls_views.register_request, name="register"),    
     path("login/", polls_views.login_request, name="login"),
     path("logout/", polls_views.logout_request, name= "logout"),
-
-
-    
+    path('edit_profile/', polls_views.edit_profile, name='edit_profile'),
 
 ]

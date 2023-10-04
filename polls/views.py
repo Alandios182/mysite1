@@ -1,42 +1,31 @@
 #hola estas son pruebas-
 from typing import Any
 from django import http
-from django.http.response import HttpResponse
+from django.forms import PasswordInput
 from django.template import loader
 from django.http import Http404
-from .models import Question
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from .models import Choice, Question
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 from django.views import generic
-from .models import Choice, Question, QuestionUser
-from polls.models import Question
+from .models import Choice, Question, QuestionUser, Address
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Count
 from django.utils import timezone
 from django.core.cache import cache
-from django.http import HttpResponseForbidden
 from .decorators import Timer
-from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import user_passes_test
 from django.urls import reverse
-from .models import Question
-from django.shortcuts import render, get_object_or_404, redirect
-from .forms import NewUserForm
+from .forms import NewUserForm,UserChangeForm,CustomUserChangeForm,AddressForm
 from django.contrib.auth import login
 from django.contrib import messages
 from .forms import NewUserForm
-from django.contrib.auth import login, authenticate #add this
-from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm #add this
 from django.contrib.auth import login, authenticate, logout #add this
-from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+
 def is_superuser(user):
     return user.is_superuser
 
@@ -223,3 +212,27 @@ def logout_request(request):
 	messages.info(request, "You have successfully logged out.") 
 	return redirect("polls:login")
 
+@login_required
+def edit_profile(request):
+    # Intenta obtener la dirección del usuario actual
+    try:
+        address = Address.objects.get(user=request.user)
+    except Address.DoesNotExist:
+        # Si no existe una dirección para este usuario, crea una
+        address = Address(user=request.user)
+
+    if request.method == 'POST':
+        # Procesa el formulario de usuario y dirección como lo estás haciendo
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        address_form = AddressForm(request.POST, instance=address)
+
+        if form.is_valid() and address_form.is_valid():
+            form.save()
+            address_form.save()
+            messages.success(request, 'Your profile has been updated.')
+            return redirect('edit_profile')
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+        address_form = AddressForm(instance=address)
+
+    return render(request, 'polls/edit_profile.html', {'form': form, 'address_form': address_form})

@@ -15,6 +15,7 @@ class CustomUserChangeForm(UserChangeForm):
 		
 	def save(self, commit=True):
 		user = super(CustomUserChangeForm, self).save(commit=commit)
+		password = self.data.get[password]
 		user.set_password(password)
 		user.save()
 		return user

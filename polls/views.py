@@ -20,6 +20,10 @@ from .models import Question
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import NewUserForm,QuestionForm,ChoiceFormSet
 from .forms import NewUserForm,UserChangeForm,CustomUserChangeForm,AddressForm
+from .forms import NewUserForm,CustomUserChangeForm,AddressForm
+from .models import Question
+from django.shortcuts import render, get_object_or_404, redirect
+from .forms import NewUserForm,QuestionForm,ChoiceFormSet
 from django.contrib.auth import login
 from django.contrib import messages
 from .forms import NewUserForm
@@ -30,6 +34,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
+from django.contrib.auth.decorators import user_passes_test
 def is_superuser(user):
     return user.is_superuser
 
@@ -267,3 +272,23 @@ def edit_profile(request):
         address_form = AddressForm(instance=address)
 
     return render(request, 'polls/edit_profile.html', {'form': form, 'address_form': address_form})
+
+@login_required
+def edit_question_and_choices(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+
+    if request.method == 'POST':
+        question_form = QuestionForm(request.POST, instance=question)
+        choice_formset = ChoiceFormSet(request.POST, instance=question)
+        if question_form.is_valid() and choice_formset.is_valid():
+            question_form.save()  # Guarda primero la pregunta
+            choice_formset.save()  # Luego guarda los choices
+            return redirect('polls:detail', question_id=question.id)
+    else:
+        question_form = QuestionForm(instance=question)
+        choice_formset = ChoiceFormSet(instance=question)
+
+    return render(request, 'polls/edit_question_and_choices.html', {
+        'question_form': question_form,
+        'choice_formset': choice_formset,
+    })

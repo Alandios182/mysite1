@@ -21,4 +21,6 @@ urlpatterns = [
     path('edit_question_and_choices/<int:question_id>/', views.edit_question_and_choices, name='edit_question_and_choices'),
     path('edit_profile/', views.edit_profile, name='edit_profile'),  
     path('edit_question_and_choices/<int:question_id>/', views.edit_question_and_choices, name='edit_question_and_choices'),
-    ]
+    path('edit_profile/', views.edit_profile, name='edit_profile'),
+    path('user_list/', views.user_list, name='user_list')
+]

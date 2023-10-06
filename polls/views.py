@@ -32,6 +32,8 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.contrib.auth.models import User
 
 from django.contrib.auth.decorators import user_passes_test
 def is_superuser(user):
@@ -291,3 +293,27 @@ def edit_question_and_choices(request, question_id):
         'question_form': question_form,
         'choice_formset': choice_formset,
     })
+
+@login_required
+def user_list(request):
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        users = User.objects.all()
+        data = []
+        for user in users:
+            access = '✔' if user.is_superuser else '❌'  # Usar '✔' para palomita y '❌' para 'X'
+            data.append([
+                user.username,
+                access,
+            ])
+        
+        response_data = {
+            "draw": 1,  # Puedes ajustar este número según tus necesidades
+            "recordsTotal": len(data),
+            "recordsFiltered": len(data),
+            "data": data,
+        }
+        
+        return JsonResponse(response_data, safe=False)
+    else:
+        print("No es una solicitud AJAX")
+        return render(request, 'polls/user_list.html')

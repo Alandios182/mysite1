@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Listado de Usuarios</title>
+    <!-- Agrega las bibliotecas CSS y JS necesarias para DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
+    
+</head>
+<body>
+    <h1>Listado de Usuarios</h1>
+    <table id="user-table" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Nombre de usuario</th>
+                <th>Superusuario</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#user-table').DataTable({
+                ajax: "{% url 'user_list' %}",  // Utiliza comillas dobles o escapa las comillas simples
+                processing: true,
+                serverSide: true,
+                // columns: [
+                //     { data: 'username' },
+                //     { data: 'is_superuser' },
+                // ]
+            });
+        });
+    </script>
+    
+</body>
+</html>
+

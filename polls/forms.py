@@ -51,15 +51,12 @@ class QuestionForm(forms.ModelForm):
         model = Question
         fields = ['question_text']  # Añade otros campos si es necesario
 
-<<<<<<< HEAD
-=======
       
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
         fields = ['question_text']  # Añade otros campos si es necesario
 
->>>>>>> 2c6ec55 (probando)
 class ChoiceForm(forms.ModelForm):
     class Meta:
         model = Choice

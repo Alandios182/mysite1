@@ -18,7 +18,6 @@ from django.contrib.auth.decorators import user_passes_test
 from django.urls import reverse
 from .models import Question
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import NewUserForm,QuestionForm,ChoiceFormSet
 from .forms import NewUserForm,UserChangeForm,CustomUserChangeForm,AddressForm
 from .forms import NewUserForm,CustomUserChangeForm,AddressForm
 from .models import Question
